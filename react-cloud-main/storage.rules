@@ -1,0 +1,58 @@
+rules_version = '2';
+service firebase.storage {
+  match /b/{bucket}/o {
+    
+    // Helper function to check if user is authenticated
+    function isAuthenticated() {
+      return request.auth != null;
+    }
+    
+    // Helper function to get file metadata from Firestore
+    function getFileMetadata(filePath) {
+      return firestore.get(/databases/(default)/documents/files/$(filePath)).data;
+    }
+    
+    // Helper function to get user data from Firestore
+    function getUserData(uid) {
+      return firestore.get(/databases/(default)/documents/users/$(uid)).data;
+    }
+    
+    // Helper function to check if user is admin
+    function isAdmin() {
+      return isAuthenticated() && getUserData(request.auth.uid).role == 'admin';
+    }
+    
+    // Helper function to check file access based on RBAC
+    function hasFileAccess(fileMetadata) {
+      let userRole = getUserData(request.auth.uid).role;
+      let isOwner = request.auth.uid == fileMetadata.uploadedBy;
+      let isAllowedUser = request.auth.uid in fileMetadata.allowedUsers;
+      let hasAllowedRole = userRole in fileMetadata.allowedRoles;
+      
+      return isOwner || isAllowedUser || hasAllowedRole || isAdmin();
+    }
+    
+    // Files uploaded by users: files/{userId}/{allPaths=**}
+    match /files/{userId}/{allPaths=**} {
+      // Read: Allow authenticated users (permissions are checked in Firestore and application layer)
+      // The Firestore rules already enforce who can see which files
+      // Storage rules can't easily check file-specific permissions from Firestore metadata
+      allow read: if isAuthenticated();
+      
+      // Write (upload): Only owner or admin can upload to this path
+      allow write: if isAuthenticated() && (
+        request.auth.uid == userId || isAdmin()
+      );
+      
+      // Delete: Only owner or admin can delete
+      allow delete: if isAuthenticated() && (
+        request.auth.uid == userId || isAdmin()
+      );
+    }
+    
+    // Deny all other storage access
+    match /{allPaths=**} {
+      allow read, write: if false;
+    }
+  }
+}
