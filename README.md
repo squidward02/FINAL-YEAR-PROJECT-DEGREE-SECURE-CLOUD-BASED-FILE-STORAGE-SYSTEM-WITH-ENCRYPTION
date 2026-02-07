@@ -2,7 +2,7 @@
 
 # Secure Cloud-Based File Storage System with Encryption
 
-This project is a Secure Cloud-Based File Storage System designed to protect user files by encrypting them before storing them in the cloud. The system ensures that sensitive data remains confidential even if the cloud storage is compromised.
+This project is a Secure Cloud-Based File Storage System designed to protect user data by encrypting files before storing them in the cloud. The system ensures confidentiality and secure access, even if the cloud storage provider is compromised.
 
 This project was developed as a Final Year Project (FYP) for academic purposes.
 
@@ -18,63 +18,67 @@ This project was developed as a Final Year Project (FYP) for academic purposes.
 ---
 
 ## Tech Stack
-- Frontend: (e.g. Web / Android / Flutter – adjust if needed)
-- Backend: (e.g. PHP / Python / Firebase integration)
+- Frontend: Web / Android (adjust based on implementation)
+- Backend: Application server with Firebase integration
 - Cloud Platform: Firebase
 - Database: Firebase Firestore / Realtime Database
 - Storage: Firebase Cloud Storage
-- Encryption: AES-256 with key derivation (e.g. PBKDF2)
+- Encryption: AES-256 with secure key derivation (e.g., PBKDF2)
 
 ---
 
 ## Cloud Setup (Firebase Required)
 
-This project **requires Firebase to be configured** before it can run properly.
+This project requires Firebase to be configured before running the system.
 
-### 1. Create Firebase Project
+### Create Firebase Project
 1. Go to the Firebase Console
 2. Click **Add project**
 3. Create a new project (example: `secure-cloud-encryption`)
 
-### 2. Enable Firebase Services
-Enable the following services based on the project implementation:
-1. **Authentication**
-   - Enable Email/Password authentication
-2. **Firestore Database** or **Realtime Database**
-   - Create a database and configure basic security rules
-3. **Firebase Storage**
-   - Used to store encrypted user files
+### Enable Firebase Services
+1. Enable **Authentication** and turn on Email/Password sign-in
+2. Enable **Firestore Database** or **Realtime Database**
+3. Enable **Firebase Storage** for encrypted file storage
 
-### 3. Add Firebase App
+### Add Firebase App Configuration
 1. Open Firebase Project Settings → **Your Apps**
 2. Register your application (Web / Android)
 3. Download the configuration file:
-   - Web: Firebase config object
+   - Web: Firebase configuration object
    - Android: `google-services.json`
 
-### 4. Insert Firebase Configuration
-Add the Firebase configuration into the project:
-- Web: Place config inside `firebaseConfig.js` (or equivalent)
+### Insert Firebase Configuration into Project
+- Web: Add Firebase config inside `firebaseConfig.js` (or equivalent)
 - Android: Place `google-services.json` inside the `app/` directory
 
-> ⚠️ Important:  
-> Do NOT upload private keys, credentials, or secret configuration files to GitHub.
+> ⚠️ Do not upload private keys, credentials, or sensitive configuration files to GitHub.  
+> Use environment variables and `.gitignore` where applicable.
 
 ---
 
-## How to Run (Local Setup)
+## Local Setup and Installation
 
 ### Prerequisites
-1. Git
+1. Git installed
 2. Internet connection
-3. Required runtime environment (example):
+3. Runtime environment (based on implementation):
    - PHP 8+ with XAMPP  
-   **OR**
+   OR  
    - Python 3.10+  
-   **OR**
-   - Node.js (if applicable)
+   OR  
+   - Node.js
 
-### Installation
-1. Clone the repository:
-   ```bash
-   git clone https://github.com/<your-username>/<repo-name>.git
+### Clone the Repository
+```bash
+git clone https://github.com/<your-username>/<repo-name>.git
+
+Navigate to the Project Directory
+cd <repo-name>
+
+Run the Project
+PHP (XAMPP)
+1. Move the project folder into htdocs
+2. Start Apache (and MySQL if used)
+3. Open the browser and access:
+http://localhost/<project-folder>
